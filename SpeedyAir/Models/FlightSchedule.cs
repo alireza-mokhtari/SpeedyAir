@@ -2,10 +2,18 @@
 {
     public class FlightSchedule
     {
-        public int ScheduleId { get; set; }
-        public int FlightId { get; set; }
-        public int DepartureDay { get; set; }
-        public int ArrivalDay { get; set; }
-        public List<FreightOrder> Orders { get; set; }
+        public FlightSchedule()
+        {
+            Id = Guid.NewGuid();
+        }
+        public Guid Id { get; set; }        
+        public int DepartureDay { get; set; }        
+        public Flight Flight { get; set; }
+        public List<ScheduledOrder> ScheduledOrders { get; set; }
+
+        public override string ToString()
+        {
+            return $"departure: {Flight.Origin.Airport}, arrival: {Flight.Destination.Airport}, day: {DepartureDay}";
+        }
     }
 }

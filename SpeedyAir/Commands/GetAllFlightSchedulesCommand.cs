@@ -1,5 +1,6 @@
 ﻿using SpeedyAir.Abstractions;
-using System.Text;
+using SpeedyAir.Abstractions.Repositories;
+using SpeedyAir.Helpers;
 
 namespace SpeedyAir.Commands
 {
@@ -18,12 +19,9 @@ namespace SpeedyAir.Commands
         public string Execute()
         {
             var schedules = _flightRepository.GetFlightSchedules();
-            StringBuilder responseBuilder = new();
-
-            for (int i = 0; i < schedules.Count; i++)           
-                responseBuilder.AppendLine($"Flight {i + 1}, {schedules[i].ToString()}");            
-
-            return responseBuilder.ToString();
+            
+            return schedules.SerializeFlightScheduleCollection();
         }
     }
+
 }

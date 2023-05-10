@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SpeedyAir.Abstractions;
+using SpeedyAir.Abstractions.Repositories;
 using SpeedyAir.Helpers;
 using SpeedyAir.Presentation;
 using SpeedyAir.Repositories;
@@ -13,8 +14,10 @@ namespace SpeedyAir
         {
             return new ServiceCollection()
                 .AddSingleton<IApplicationContext, SpeedyAirContext>()
+                .AddSingleton<IFlightPointRepository, FlightPointRepository>()
                 .AddSingleton<IFlightRepository, FlightRepository>()
                 .AddSingleton<IOrderRepository, OrderRepository>()
+
                 .ConfigureCommands()
 
                 .AddSingleton<IMenu, InventoryManagementMenu>()

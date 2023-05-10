@@ -23,20 +23,30 @@ namespace SpeedyAir.Presentation
             foreach (var item in menuItems)
                 screen.PrintLine(item);
 
-            screen.PrintLine("\n\n");
+            screen.Print("\n\n Enter Option> ");
 
             var entered = screen.ReadCommand();
 
-            if(!string.IsNullOrEmpty(entered) && CommandDictionary.TryGetValue(entered , out ICommand enteredCommond))
+            if(!string.IsNullOrEmpty(entered) && CommandDictionary.TryGetValue(entered , out ICommand enteredCommond))            
+                TryExecuteCommand(screen, enteredCommond);           
+            else            
+                screen.PrintLine("Command is not defined. Please Try Again.");
+
+            Prompt(screen);
+        }
+
+        private static void TryExecuteCommand(IScreen screen, ICommand enteredCommond)
+        {
+            try
             {
                 var result = enteredCommond.Execute();
                 screen.PrintLine("Command Executed Successfully. Here is the result => ");
                 screen.PrintLine(result);
             }
-            else            
-                screen.PrintLine("Command is not defined. Please Try Again.");
-
-            Prompt(screen);
+            catch
+            {
+                screen.PrintLine("[ERROR] Couldn't Execute the command. Please try again.");
+            }
         }
 
         private IEnumerable<string> BuildMenuItems()

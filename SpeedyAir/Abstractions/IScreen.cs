@@ -6,5 +6,6 @@
         public string? ReadCommand();
         public void PauseToExit();
         public void DisplayMenu();
+        public void Print(string v);
     }
 }

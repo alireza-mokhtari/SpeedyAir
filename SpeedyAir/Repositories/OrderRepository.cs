@@ -1,18 +1,40 @@
 ﻿using SpeedyAir.Abstractions;
+using SpeedyAir.Abstractions.Repositories;
 using SpeedyAir.Models;
 
 namespace SpeedyAir.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        public void AssignToFlight(FlightSchedule flightSchedule)
+        private readonly IApplicationContext _context;
+        public OrderRepository(IApplicationContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public List<FreightOrder> GetFreightOrders()
+        public void AddOrders(List<FreightOrder> orders)
+        {            
+            _context.FreightOrders.AddRange(orders);
+        }
+
+        public void AssignToFlight(FreightOrder order, FlightSchedule flightSchedule)
         {
-            throw new NotImplementedException();
+            flightSchedule.ScheduledOrders.Add(order);
+            order.FlightSchedule = flightSchedule;
+        }
+
+        public FreightOrder? FindOrder(string orderNo)
+        {
+            return _context.FreightOrders
+                .FirstOrDefault(o => o.OrderNo.Equals(orderNo, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public List<FreightOrder> GetUnscheduledOrders()
+        {
+            return _context.FreightOrders
+                .Where(fo => fo.FlightSchedule == null)
+                .OrderBy(fo => fo.OrderNo)
+                .ToList();
         }
     }
 }

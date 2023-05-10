@@ -1,4 +1,5 @@
 ﻿using SpeedyAir.Abstractions;
+using SpeedyAir.Abstractions.Repositories;
 using SpeedyAir.Models;
 
 namespace SpeedyAir.Repositories
@@ -9,23 +10,27 @@ namespace SpeedyAir.Repositories
         public FlightRepository(IApplicationContext applicationContext)
         {
             _context = applicationContext;
-        }   
+        }
 
-        public List<Flight> GetFlights()
+        public FlightSchedule? FindFirstVacantFlight(FlightPoint origin, FlightPoint destination)
         {
-            throw new NotImplementedException();
+            return _context.FlightSchedules
+                .FirstOrDefault(fs => fs.Flight.Origin.Equals(origin)
+                    && fs.Flight.Destination.Equals(destination)
+                    && fs.HasFreightVacancy());
         }
 
         public List<FlightSchedule> GetFlightSchedules()
         {
-            return _context.Flights
-                .SelectMany(f => f.Schedules)
+            return _context.FlightSchedules                
                 .ToList();
         }
 
         public List<FlightSchedule> GetLoadedFlightSchedules()
         {
-            throw new NotImplementedException();
+            return _context.FlightSchedules                
+                .Where(sc => sc.ScheduledOrders.Any())
+                .ToList();
         }
     }
 }

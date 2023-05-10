@@ -1,11 +1,12 @@
 ﻿using SpeedyAir.Models;
 
-namespace SpeedyAir.Abstractions
+namespace SpeedyAir.Abstractions.Repositories
 {
     public interface IFlightRepository
     {
-        public List<Flight> GetFlights();
+        public FlightSchedule? FindFirstVacantFlight(FlightPoint originAirport, FlightPoint destinationAirport);
         public List<FlightSchedule> GetFlightSchedules();
         public List<FlightSchedule> GetLoadedFlightSchedules();
     }
+
 }

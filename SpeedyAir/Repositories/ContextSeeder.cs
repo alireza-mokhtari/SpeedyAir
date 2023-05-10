@@ -6,7 +6,7 @@ namespace SpeedyAir.Repositories
 {
     public static class ContextSeeder
     {
-        public const int DEFAULT_PLANE_FREIGHT_CAPACITY = 2;
+        public const int DEFAULT_PLANE_FREIGHT_CAPACITY = 20;
         public static void SeedContext(this ServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<IApplicationContext>();
@@ -20,19 +20,28 @@ namespace SpeedyAir.Repositories
 
         private static void SeedFlightSchedules(IApplicationContext context)
         {
+            var scheduleId = 1;
             foreach (var flight in context.Flights)
             {
-                flight.Schedules.Add(new FlightSchedule
+                var firstDay = new FlightSchedule
                 {
+                    Id = scheduleId++,
                     DepartureDay = 1,
                     Flight = flight
-                });
+                };
 
-                flight.Schedules.Add(new FlightSchedule
+                var secondDay = new FlightSchedule
                 {
+                    Id = scheduleId++,
                     DepartureDay = 2,
                     Flight = flight
-                });
+                };
+
+                flight.Schedules.Add(firstDay);
+                flight.Schedules.Add(secondDay);
+
+                context.FlightSchedules.Add(firstDay);
+                context.FlightSchedules.Add(secondDay);
             }
         }
 

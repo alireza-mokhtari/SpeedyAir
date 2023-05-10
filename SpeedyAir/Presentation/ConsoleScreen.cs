@@ -15,6 +15,11 @@ namespace SpeedyAir.Presentation
             Console.WriteLine(message);
         }
 
+        public void Print(string message)
+        {
+            Console.Write(message);
+        }
+
         public string? ReadCommand()
         {
             return Console.ReadLine();
